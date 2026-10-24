@@ -1,0 +1,1 @@
+{"compilerOptions":{"target":"ES2022","module":"NodeNext","moduleResolution":"NodeNext","allowJs":true,"checkJs":false,"noEmit":true,"strict":false,"skipLibCheck":true,"types":["node"]},"include":[".pi/extensions/opera/**/*.ts",".pi/extensions/opera/**/*.mjs"]}

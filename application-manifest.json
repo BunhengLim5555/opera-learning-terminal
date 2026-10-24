@@ -1,0 +1,248 @@
+{
+  "version": "1.2.0",
+  "files": [
+    {
+      "path": ".gitignore",
+      "sha256": "c0f41cd577d394ee4310d25846b66fc2ccba6de0c77e161a2f88e80afb14632a"
+    },
+    {
+      "path": ".pi/extensions/opera/assets/marcus-aurelius.png",
+      "sha256": "0ce3a01ba9bff5223e663da9bd85067d2c8e3468748f4158984f5f811285c649"
+    },
+    {
+      "path": ".pi/extensions/opera/assets/marcus-aurelius.prompt.txt",
+      "sha256": "55b94f8975b31ba92df8028ccc5edca1106b9e2aeb3f44aa0f1d7806f65e03bc"
+    },
+    {
+      "path": ".pi/extensions/opera/index.ts",
+      "sha256": "5db3a6ed5107600c3120e23d7eb26f91442dac8bbc378a15490f14261f5bb04a"
+    },
+    {
+      "path": ".pi/extensions/opera/lib/activity-client.js",
+      "sha256": "648479a15825ba8c18db26e040075b12976478bd51057bcb4fbd32029412322d"
+    },
+    {
+      "path": ".pi/extensions/opera/lib/activity.mjs",
+      "sha256": "03a9f53ac4c9ceacde3a3a09039729ec2f605a74fe5cfa7ee0dba44e29fd9e8c"
+    },
+    {
+      "path": ".pi/extensions/opera/lib/branding.mjs",
+      "sha256": "259beded19d5dab2d7a499708b42b0c0c98ceb848593a250b281141cc561be95"
+    },
+    {
+      "path": ".pi/extensions/opera/lib/context.mjs",
+      "sha256": "9252929937e9797d86ed4c5080983bba93e75f8292c891390d21ce65ba6c5866"
+    },
+    {
+      "path": ".pi/extensions/opera/lib/insights.mjs",
+      "sha256": "2bf48a62894c5031e0ef2eebce1ec76445b217a7d4305b1c83e383a037acaf13"
+    },
+    {
+      "path": ".pi/extensions/opera/lib/quiz.mjs",
+      "sha256": "a1ff3ba1786a2826e82d41e4feec8df0856d9b8a449ba4509b6936411f01bba0"
+    },
+    {
+      "path": ".pi/extensions/opera/lib/source-picker.mjs",
+      "sha256": "71d8dca4a16260f410203ea4625f237a27af67c6fed3c494311d086ae96a92f3"
+    },
+    {
+      "path": ".pi/extensions/opera/lib/sources.mjs",
+      "sha256": "b39f3847674a83d089e851c081012ede5068325b19d2402c951574f881923d13"
+    },
+    {
+      "path": ".pi/extensions/opera/lib/store.mjs",
+      "sha256": "40f50b6b47cf2d23ed4bfd14fd732424d9f8709453d925f88c056e45082f9e3a"
+    },
+    {
+      "path": ".pi/extensions/opera/lib/visual.mjs",
+      "sha256": "27330908a2d0e5d3adf7d75da6dba449f322c19cd96109352a26d5d5305b8e4d"
+    },
+    {
+      "path": ".pi/skills/learning-system/SKILL.md",
+      "sha256": "aa2763596f4e5a8684972a2039e665f1b5c0dc0320b6388ade520f6bfeda6ae2"
+    },
+    {
+      "path": ".pi/skills/learning-system/references/activities.md",
+      "sha256": "6418b89611599a7f37ee92a9c4831c711185649ae15548469dfd5c0c0f0b1ea4"
+    },
+    {
+      "path": ".pi/skills/learning-system/references/debugging.md",
+      "sha256": "c6831948d1839887652a6ccb83c137493178c75aa45a0cecbbc6fd5ead2099dc"
+    },
+    {
+      "path": ".pi/skills/learning-system/references/domains/ai-ml.md",
+      "sha256": "6b0b696edb89ea7bfba28806c8780dc4dd2239ba9f8974218c52452760e3dca3"
+    },
+    {
+      "path": ".pi/skills/learning-system/references/domains/cybersecurity.md",
+      "sha256": "c32c8dad5cdd96803f7d19c341c6b932ba4e28417c6b5e7dd77d92aa54841aec"
+    },
+    {
+      "path": ".pi/skills/learning-system/references/domains/languages.md",
+      "sha256": "ae8e27acf94e0b0f7b796cd5165243f395bf0e544258444ce0d1c9397ea5338d"
+    },
+    {
+      "path": ".pi/skills/learning-system/references/domains/programming.md",
+      "sha256": "d2cc117c357bad79f3c5c93b64d71ca8233f26e6a44a487e232b77bad78ba7c0"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "d84602db732fdbb26a743a87c0677aa61c4ed72f068c713659e7cac15d92098e"
+    },
+    {
+      "path": "DESIGN.md",
+      "sha256": "624baef5cd17ca462e361829865a30d0519e91796801f9ffd80ea8a396b3c6e6"
+    },
+    {
+      "path": "GUIDE.md",
+      "sha256": "37fafc0614435e39089425f51577ea082af69a57760b662ec644ee8aa95a9cc6"
+    },
+    {
+      "path": "README.md",
+      "sha256": "b5dcce3c2542bd9ffd89db7a7874693fed0c881bdc75d2a1c7c5271a3672c3b9"
+    },
+    {
+      "path": "Update-Opera.ps1",
+      "sha256": "8345b8ef57b1868b1f2f35f2d6fbac2028a245aca14c643b8efa518bf74fcc83"
+    },
+    {
+      "path": "VALIDATION.md",
+      "sha256": "de02579145d8135fa16969b37b5f3d893bfd9330dc2a7156b127e958a2edf66a"
+    },
+    {
+      "path": "examples/opera-preview.html",
+      "sha256": "cd6bfe511f6144503bc5ce646f77750fd94a91898ed803cd2c39c3ca3a492107"
+    },
+    {
+      "path": "examples/opera-preview.svg",
+      "sha256": "4a9b145dda3aa072970f46f5582366ce924ab4278a3ba30ecddf58a6fd16692a"
+    },
+    {
+      "path": "examples/visual-example.json",
+      "sha256": "9b108672b58447d695937fabc203074d23d19b6f17856df61dd5ffdf77ad105d"
+    },
+    {
+      "path": "opera.mjs",
+      "sha256": "d2d23e9a6e3f835897c33c476e606698ab1f88b805247e619d6ed70d2cf0d997"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "16aeec0c6124c52a5a7ea6375ea7fdfd6112de3303d8e2074c4c42bda9246cbd"
+    },
+    {
+      "path": "package.json",
+      "sha256": "103276facf54873916877a0ddecaf89fb3139de9812b7c9cce073f7f9d9df36d"
+    },
+    {
+      "path": "tests/activities.test.mjs",
+      "sha256": "038cc9c1a25e65c395cd35f36dc8a0e441a81bb9ebe63b06dc626be77ca7dd11"
+    },
+    {
+      "path": "tests/branding.test.mjs",
+      "sha256": "0b395df2b9df3eb58c7d4962951969e71ad2e1bdcd635f6bff8c505c49b2d384"
+    },
+    {
+      "path": "tests/browser.test.mjs",
+      "sha256": "68597d15385443b51038a575beb344e9a5944d1fa3bfe28e59d38c481fd05db6"
+    },
+    {
+      "path": "tests/core.test.mjs",
+      "sha256": "4a5e791404d3eb69a22a1768ee25befcd2f3fa06167994bc74b13aff6b4e4adb"
+    },
+    {
+      "path": "tests/extension.test.mjs",
+      "sha256": "b3fccf8b41b01d18c7df61b04cb7453353b1be9c9b19141a8358b9cf5e7b5740"
+    },
+    {
+      "path": "tests/lean.test.mjs",
+      "sha256": "a53e511c1c03bccf8ea1e4fc87e09dd2b2b6255ed3138c365108a7db10a47354"
+    },
+    {
+      "path": "tests/pdf-source.test.mjs",
+      "sha256": "1ee96037b0f2a16f392d7d1f19ee44301fb76f3708a9d202b81efed859327342"
+    },
+    {
+      "path": "tests/source-picker.test.mjs",
+      "sha256": "5fb5d5834feb012e77ec6c24471583c3ad02365981a192fd3752f648c4116845"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "7fc244212cd446f41010276402ce2869e3936cf29ebf9b9eec0a72384905ca64"
+    }
+  ],
+  "obsolete": [
+    ".pi/extensions/opera/index.ts.before-3d-game-1792817090036.bak",
+    ".pi/extensions/opera/index.ts.before-learning-world-1792812961263.bak",
+    ".pi/extensions/opera/index.ts.before-source-picker-1792776780351.bak",
+    ".pi/extensions/opera/lib/branding.mjs.before-3d-game-1792817090036.bak",
+    ".pi/extensions/opera/lib/branding.mjs.before-animation-1792774739957.bak",
+    ".pi/extensions/opera/lib/branding.mjs.before-marcus-update-1792774258388.bak",
+    ".pi/extensions/opera/lib/branding.mjs.before-rgb-repair-1792773867449.bak",
+    ".pi/extensions/opera/lib/branding.mjs.before-space-1792775741654.bak",
+    ".pi/extensions/opera/lib/game-client.js",
+    ".pi/extensions/opera/lib/game-command.mjs",
+    ".pi/extensions/opera/lib/game-content.mjs",
+    ".pi/extensions/opera/lib/game-engine.mjs",
+    ".pi/extensions/opera/lib/game-renderer.js",
+    ".pi/extensions/opera/lib/game-server.mjs",
+    ".pi/extensions/opera/lib/game.css",
+    ".pi/extensions/opera/lib/game.html",
+    ".pi/extensions/opera/lib/session.mjs",
+    ".pi/extensions/opera/lib/source-picker.mjs.before-3d-game-1792817090036.bak",
+    ".pi/extensions/opera/lib/space.mjs",
+    ".pi/extensions/opera/lib/visual.mjs.before-learning-world-1792812961263.bak",
+    ".pi/extensions/opera/lib/world.mjs",
+    ".pi/skills/learning-concepts/SKILL.md",
+    ".pi/skills/learning-concepts/agents/openai.yaml",
+    ".pi/skills/learning-concepts/assets/icon.svg",
+    ".pi/skills/learning-concepts/references/patterns.md",
+    ".pi/skills/learning-practice/SKILL.md",
+    ".pi/skills/learning-practice/agents/openai.yaml",
+    ".pi/skills/learning-practice/assets/icon.svg",
+    ".pi/skills/learning-practice/references/debugging.md",
+    ".pi/skills/learning-projects/SKILL.md",
+    ".pi/skills/learning-projects/agents/openai.yaml",
+    ".pi/skills/learning-projects/assets/icon.svg",
+    ".pi/skills/learning-projects/references/milestones.md",
+    ".pi/skills/learning-review/SKILL.md",
+    ".pi/skills/learning-review/agents/openai.yaml",
+    ".pi/skills/learning-review/assets/icon.svg",
+    ".pi/skills/learning-review/references/rubric.md",
+    ".pi/skills/learning-sources/SKILL.md",
+    ".pi/skills/learning-sources/agents/openai.yaml",
+    ".pi/skills/learning-sources/assets/icon.svg",
+    ".pi/skills/learning-sources/references/unit-template.md",
+    ".pi/skills/learning-system/agents/concept-tutor.md",
+    ".pi/skills/learning-system/agents/diagnostician.md",
+    ".pi/skills/learning-system/agents/evaluator.md",
+    ".pi/skills/learning-system/agents/openai.yaml",
+    ".pi/skills/learning-system/agents/practice-designer.md",
+    ".pi/skills/learning-system/agents/project-mentor.md",
+    ".pi/skills/learning-system/agents/protocol.md",
+    ".pi/skills/learning-system/agents/source-curator.md",
+    ".pi/skills/learning-system/assets/checkpoint-template.md",
+    ".pi/skills/learning-system/assets/domain-adapter-template.md",
+    ".pi/skills/learning-system/assets/icon.svg",
+    ".pi/skills/learning-system/assets/track-template.json",
+    ".pi/skills/learning-system/core/learning-core.md",
+    ".pi/skills/learning-system/references/domain-adapters.md",
+    ".pi/skills/learning-system/references/integration.md",
+    ".pi/skills/learning-system/references/reference-mapping.md",
+    ".pi/skills/learning-system/references/review-queue.md",
+    ".pi/skills/learning-system/references/routing.md",
+    ".pi/skills/learning-system/references/state-contract.md",
+    ".pi/skills/learning-system/scripts/review_queue.py",
+    "examples/learning-world-preview.html",
+    "examples/learning-world.json",
+    "tests/branding.test.mjs.before-animation-1792774739957.bak",
+    "tests/branding.test.mjs.before-marcus-update-1792774258388.bak",
+    "tests/branding.test.mjs.before-rgb-repair-1792773867449.bak",
+    "tests/extension.test.mjs.before-3d-game-1792817090036.bak",
+    "tests/extension.test.mjs.before-source-picker-1792776780351.bak",
+    "tests/game-browser.test.mjs",
+    "tests/game-renderer.test.mjs",
+    "tests/game.test.mjs",
+    "tests/space.test.mjs",
+    "tests/world.test.mjs"
+  ]
+}

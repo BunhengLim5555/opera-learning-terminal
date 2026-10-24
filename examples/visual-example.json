@@ -1,0 +1,21 @@
+{
+  "title": "LoRA: capacity and placement",
+  "mode": "map",
+  "summary": "Two choices shape an adapter: its rank and where you attach it. Follow the connections to see how both affect the adaptation you evaluate.",
+  "source": "Adapted from the supplied vault's LoRA.md; conceptual example, not an experimental result.",
+  "nodes": [
+    {"id":"rank","label":"Rank: capacity per adapter","detail":"Rank r sets the size of the low-rank bottleneck. For a weight matrix with dimensions d_out × d_in, an adapter pair has r(d_in + d_out) trainable parameters. Increasing rank adds capacity and cost; it does not guarantee better validation performance."},
+    {"id":"targets","label":"Targets: where adapters go","detail":"Target selection decides which weight matrices receive adapters. Adding more target matrices creates more trainable adapter pairs. Rank and placement are separate choices."},
+    {"id":"base","label":"Base weight W stays frozen","detail":"In standard LoRA fine-tuning, the chosen base weight is kept fixed. The base model still exists; LoRA reduces trainable adaptation parameters rather than automatically shrinking the base model."},
+    {"id":"adapter","label":"Train the low-rank update","detail":"The matrices A and B learn an update ΔW = (α/r)BA under the conventional LoRA scaling. Scaling can vary by implementation. Training changes the adapter parameters while the selected base weights remain frozen."},
+    {"id":"adapted","label":"Combine base and update","detail":"The adapted transformation uses W + ΔW. When supported by the implementation and numerical representation, the update can be merged for inference. Keeping a clean base makes it easier to reuse different adapters."},
+    {"id":"validate","label":"Evaluate the trade-off","detail":"Compare candidates on suitable validation data and task metrics, along with memory and compute costs. Increase rank or change targets only when the observed benefit justifies it."}
+  ],
+  "edges": [
+    {"from":"rank","to":"adapter","label":"size"},
+    {"from":"targets","to":"adapter","label":"placement"},
+    {"from":"base","to":"adapted","label":"fixed weights"},
+    {"from":"adapter","to":"adapted","label":"learned update"},
+    {"from":"adapted","to":"validate","label":"test on held-out data"}
+  ]
+}
