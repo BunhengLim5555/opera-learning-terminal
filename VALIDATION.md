@@ -1,48 +1,45 @@
-# OPERA lean refactor ? verification
+# OPERA 1.3.0 source-reader verification
 
-Verified on Windows with Node.js v24.22.1 and the existing pinned Pi 1.4.0 installation.
+Implemented both requested source formats in the existing project and source workflow. The command list remains /learn, /review and /opera.
+
+## PPTX
+
+- File and folder selection, Windows picker filter, listing, bounded reading and literal search.
+- Slide text and speaker notes follow presentation relationships, including reordered filenames, rich text, table-cell paragraphs, decoded Unicode/entities and labelled hidden slides.
+- Read excerpts and search hits cite slide numbers; notes are marked separately. Blank/image-only slides have an explicit limitation marker.
+- Tested standard and strict OOXML namespaces, changed-file cache invalidation, missing/malformed/encrypted/legacy files, external/escaping relationships, expansion/text bounds and a real Pi tool invocation.
+- Images, animations, embedded objects and chart/SmartArt internals are not rendered or OCR-read. No PowerPoint desktop session was used.
+
+## MP4
+
+- File/folder selection, Windows picker filter and time-window reading. Defaults: 30 seconds and three sampled frames; configurable 0-6 frames, up to 300 seconds per read.
+- Real local FFmpeg/FFprobe processes decoded generated H.264/AAC MP4s and embedded mov_text subtitles, returned timestamped JPEG image blocks, and read/searched matching SRT sidecars from an authorized folder.
+- Single-file source selection does not authorize sibling subtitles. A file-symlink escape test is present but skipped on this Windows host because file-symlink privileges are unavailable. Existing folder/junction confinement tests still pass.
+- Video files bypass the 20 MB text-source cap and are supported up to 4 GB without loading the whole recording into memory. A >20 MB fixture was read successfully.
+- Frame payloads stay in image blocks; base64 is omitted from metadata/details. Text-only models receive captions and metadata without images.
+- Invalid time windows/files, missing tools, cancellation, WebVTT parsing, caption bounds and missing-transcription behavior are tested.
+- Local Whisper integration was tested with an injected CLI response while actual FFmpeg extracted the bounded audio clip. Timestamp offsets and temporary-file cleanup were verified. Whisper is not installed on this machine, so actual speech recognition/model quality was not tested. The reader does not infer spoken content from frames.
+- Video search covers accessible sidecar subtitles only. Embedded captions and optional local speech are available through bounded reads. No remote-video downloader or always-running service was added.
 
 ## Results
 
-- Baseline: 95 tests passed; TypeScript check passed.
-- Updated: 84 tests passed, zero failed/skipped; npm run check passed. Removed tests covered removed games and the decorative 3D overlay; new tests cover the simplified workflow.
-- Real Pi extension loader registers exactly /learn, /review and /opera, plus the five retained tools.
-- Real Pi project-resource loaders discover AGENTS.md and one supporting learning-system skill.
-- /opera source selection, source-driven /learn, checkpoint save/resume, natural-request tool paths, pending submitted answers, hints, answer exposure, style changes, feedback pause and issue updates use simulated learner records.
-- Reviews select actual weak/due evidence. Legacy version-1 state, unknown fields, independent evidence and checkpoints survive; invalid state is not reset. No schema migration was needed.
-- Startup does not modify state/progress or create a Markdown transcript, even with legacy logging=true. Existing logs and notes remain unchanged.
-- Model-context filtering keeps one fresh state summary and removes older OPERA hidden core/state snapshots from model input, without changing Pi session history or other plugins' messages.
-- Notes and HTML/SVG/Markdown concept visuals still save. Existing headless Chromium tests exercise browser choice/recall, prediction, tasks, audio fallbacks/consent and the evidence dashboard.
-- Windows picker PowerShell scripts parse successfully; picker outcomes are injected in tests. PDF extraction invocation/fallback behavior is tested with simulated extractor processes.
-- Launcher help retains the existing entrypoint and passthrough design and now lists three commands.
-- Windows updater tested twice against a simulated old installation with spaces in its path. It removed 73 obsolete application files and preserved six sentinel files: learner state, personal note, archived game record, provider-settings sentinel, custom skill and dependency-folder sentinel. Updated launcher help worked.
-- SHA-256 comparison of all 53 pre-existing files under .opera and Learning found zero changes. Existing real state also passes read-only validation. The private backup sits beside the project; it is not included in the distribution.
-- Active game modules/assets/tests, offline world renderer/examples, role machinery, redundant skills and full-session logger are absent. Core dependencies are still used by retained functionality; no direct dependency was game-only and no new dependency was added.
+Windows, Node.js v24.22.1, pinned Pi 1.4.0:
 
-## Instruction payload measurement
+- npm test: 105 tests, 104 passed, zero failed, one skipped (file-symlink privilege).
+- npm run check: passed.
+- node opera.mjs --help: passed; the three OPERA commands are unchanged.
+- Existing Chromium activity/dashboard checks and earlier teaching/progress tests still pass.
+- New source readers use fflate 0.8.3, @xmldom/xmldom 0.9.12, ffmpeg-static 5.3.0 and @ffprobe-installer/ffprobe 2.1.2. Installed local codec executables were exercised; no global installation was made.
+- npm audit reports the existing Pi/undici advisories; no advisory was reported against the new parser/media packages. No unrelated Pi/provider upgrade was attempted.
 
-Same conditions: fresh state, balanced style, terminal practice, no topic/source/attempts. UTF-8 byte counts:
+The earlier private backup and current learner records differ at state.json, its backup and Progress.md: current records contain newer topics, source registrations and attempts. All earlier attempt IDs, source IDs and topic IDs are still present; the other 50 snapshotted files are unchanged. The current learner files were preserved and separately snapshotted before packaging; no state migration or rollback was performed. Final packaging compares against this current SHA-256 snapshot. Distribution packaging verifies its inventory and checksums and excludes learner data, dependencies, credentials and private backups. The updater is verified against a simulated previous installation, preserving learner/configuration files and the dependency directory. Another installation must run npm ci after updating application files.
 
-| OPERA payload | Before | After |
-|---|---:|---:|
-| Project AGENTS.md | 7,666 | 4,910 |
-| Hidden runtime state/instruction message | 9,688 | 153 |
-| Combined measured payload | 17,354 | 5,063 |
+No live model/provider session, manual native file dialog, real learner video/deck or audio-recognition model was used. Synthetic fixtures exercised the actual source tool and codec processes. Reading-order/vision quality and arbitrary media codecs remain format/model dependent.
 
-The old runtime message included the 6,304-byte shared teaching core plus repeated runtime teaching rules. The updated message contains state only; AGENTS.md is the sole teaching contract. The context hook replaces older OPERA snapshots in model input with one current summary.
+## Use and update
 
-This measures those two OPERA payloads, not total model usage. Pi's base prompt, tool schemas, skill catalog, loaded references, history and provider tokenization are excluded. No token-saving percentage or live usage claim is made. Non-empty state changes the summary size; historical attempts are bounded to the active topic and last three records.
+This working installation already has the new dependencies. Restart OPERA, select a PPTX or MP4 through /opera > Select source, and ask for slides or a time range.
 
-## Scope and limitations
+For video images use a vision-capable tutoring model. For speech without captions, optional local Whisper must be installed/configured; otherwise OPERA explicitly reports that audio was not transcribed. The optional setup is described in README.md and the narrowly loaded media reference.
 
-No live provider/model teaching session was run, so natural-language routing and teaching quality were not end-to-end validated with a model. Native dialogs were not manually clicked, and default-desktop browser opening was not manually verified. Browser tests were headless; microphone input was simulated. No real learner achievements were generated. Actual external HTTPS sites, installed PDF binaries and fresh npm installation were not tested in this refactor.
-
-The original launcher file remains at its existing path; no global wrapper was recreated or modified. An independently configured global launcher was not located or manually invoked.
-
-## Delivery and update
-
-The project is updated in place. Restart OPERA. Dependencies are unchanged; no installation is needed for this existing installation. Fresh installs use npm ci.
-
-OPERA_Lean_1.2.0.zip contains only application code, teaching references, examples, checks and documentation. It excludes .opera, Learning, node_modules, credentials, private backups and Pi session history.
-
-For another installation, extract separately, close OPERA and run Update-Opera.ps1 -Target with the existing project path. Affected application files are backed up first. Learner/configuration trees and unrelated files are preserved. See README.md for the exact Windows command.
+For another installation, extract OPERA_Lean_1.3.0.zip separately, close OPERA, run Update-Opera.ps1 -Target with the old project path, then run npm ci in that target folder. Existing .opera, Learning, provider configuration and Pi history are preserved.

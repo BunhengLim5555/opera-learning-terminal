@@ -1,9 +1,9 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "files": [
     {
       "path": ".gitignore",
-      "sha256": "c0f41cd577d394ee4310d25846b66fc2ccba6de0c77e161a2f88e80afb14632a"
+      "sha256": "ef9e0fce7b9697fa10282d83d7c2e8ef1183a12be5eb054f52fa93c64fb764ea"
     },
     {
       "path": ".pi/extensions/opera/assets/marcus-aurelius.png",
@@ -15,7 +15,7 @@
     },
     {
       "path": ".pi/extensions/opera/index.ts",
-      "sha256": "5db3a6ed5107600c3120e23d7eb26f91442dac8bbc378a15490f14261f5bb04a"
+      "sha256": "c5255d257645f00547ce210fa2e0b61a709d4dd9d3f1b48e3a1019217588e917"
     },
     {
       "path": ".pi/extensions/opera/lib/activity-client.js",
@@ -38,20 +38,28 @@
       "sha256": "2bf48a62894c5031e0ef2eebce1ec76445b217a7d4305b1c83e383a037acaf13"
     },
     {
+      "path": ".pi/extensions/opera/lib/pptx.mjs",
+      "sha256": "f3b12e11506a5d2c5d689204faac890dbab9fae66254684d81b53b2df4207372"
+    },
+    {
       "path": ".pi/extensions/opera/lib/quiz.mjs",
       "sha256": "a1ff3ba1786a2826e82d41e4feec8df0856d9b8a449ba4509b6936411f01bba0"
     },
     {
       "path": ".pi/extensions/opera/lib/source-picker.mjs",
-      "sha256": "71d8dca4a16260f410203ea4625f237a27af67c6fed3c494311d086ae96a92f3"
+      "sha256": "4d6ad5d5b5891c351629d50bf3db111e037a2ebc196fa565dec24f4218c37bd3"
     },
     {
       "path": ".pi/extensions/opera/lib/sources.mjs",
-      "sha256": "b39f3847674a83d089e851c081012ede5068325b19d2402c951574f881923d13"
+      "sha256": "f5102bea612ef58298a94206137b2dcafecf60465e3474d4f7e470ba46fdbc98"
     },
     {
       "path": ".pi/extensions/opera/lib/store.mjs",
       "sha256": "40f50b6b47cf2d23ed4bfd14fd732424d9f8709453d925f88c056e45082f9e3a"
+    },
+    {
+      "path": ".pi/extensions/opera/lib/video.mjs",
+      "sha256": "d1269863e52666d5ed1b2ae41998dc5cabb6a68971e96ce9fa94560bdaf3e2ef"
     },
     {
       "path": ".pi/extensions/opera/lib/visual.mjs",
@@ -59,7 +67,7 @@
     },
     {
       "path": ".pi/skills/learning-system/SKILL.md",
-      "sha256": "aa2763596f4e5a8684972a2039e665f1b5c0dc0320b6388ade520f6bfeda6ae2"
+      "sha256": "35ec659cad1b3d83c018b1c5c9a3063c2ddec0da85a19637db6cce61bc2b25c6"
     },
     {
       "path": ".pi/skills/learning-system/references/activities.md",
@@ -86,28 +94,32 @@
       "sha256": "d2cc117c357bad79f3c5c93b64d71ca8233f26e6a44a487e232b77bad78ba7c0"
     },
     {
+      "path": ".pi/skills/learning-system/references/media.md",
+      "sha256": "a85e98d80f09645bc35d76c937e7d6c60b5b7c173a5450e900fd99688b9a47d5"
+    },
+    {
       "path": "AGENTS.md",
-      "sha256": "d84602db732fdbb26a743a87c0677aa61c4ed72f068c713659e7cac15d92098e"
+      "sha256": "b88cb6ff8b86b2cb166f81f39a06e38ec21a63449ebf02ce0d5008997d923d3b"
     },
     {
       "path": "DESIGN.md",
-      "sha256": "624baef5cd17ca462e361829865a30d0519e91796801f9ffd80ea8a396b3c6e6"
+      "sha256": "17e24fb1b0d3927f91c6e3cbf2d11af87f00313a52cdeb20899d9a8aede88615"
     },
     {
       "path": "GUIDE.md",
-      "sha256": "37fafc0614435e39089425f51577ea082af69a57760b662ec644ee8aa95a9cc6"
+      "sha256": "72ef697a074f406b9b4feaed15c8bf1dac002452f9b0e9e9d65d29598627162f"
     },
     {
       "path": "README.md",
-      "sha256": "b5dcce3c2542bd9ffd89db7a7874693fed0c881bdc75d2a1c7c5271a3672c3b9"
+      "sha256": "905b7818d6e32957c7888e4cd3d033031b84171d551b1d8a7bdab45715f82d68"
     },
     {
       "path": "Update-Opera.ps1",
-      "sha256": "8345b8ef57b1868b1f2f35f2d6fbac2028a245aca14c643b8efa518bf74fcc83"
+      "sha256": "a90c6da7125d3fe8c26fabf43b33361e7cc96e3b2fe7792b87513b33dd1eb440"
     },
     {
       "path": "VALIDATION.md",
-      "sha256": "de02579145d8135fa16969b37b5f3d893bfd9330dc2a7156b127e958a2edf66a"
+      "sha256": "5778a77056795fe802632dd331ab5e0d55dbf44b4ad4ba3b57ef00bb402c29f4"
     },
     {
       "path": "examples/opera-preview.html",
@@ -127,11 +139,11 @@
     },
     {
       "path": "package-lock.json",
-      "sha256": "16aeec0c6124c52a5a7ea6375ea7fdfd6112de3303d8e2074c4c42bda9246cbd"
+      "sha256": "51c04050b44c592ad6c3d3cf020ad976d20d9b372e15272eb5e671ddd874ebc1"
     },
     {
       "path": "package.json",
-      "sha256": "103276facf54873916877a0ddecaf89fb3139de9812b7c9cce073f7f9d9df36d"
+      "sha256": "6535b2d1448b1938aaeb15a3686595f139a3abfa9ca7cf5a896a56b5711756b0"
     },
     {
       "path": "tests/activities.test.mjs",
@@ -151,7 +163,7 @@
     },
     {
       "path": "tests/extension.test.mjs",
-      "sha256": "b3fccf8b41b01d18c7df61b04cb7453353b1be9c9b19141a8358b9cf5e7b5740"
+      "sha256": "bf4293025c5cffe1291f168346f7c729b19052d0b472a08c34c132f2947da31e"
     },
     {
       "path": "tests/lean.test.mjs",
@@ -162,8 +174,16 @@
       "sha256": "1ee96037b0f2a16f392d7d1f19ee44301fb76f3708a9d202b81efed859327342"
     },
     {
+      "path": "tests/pptx-source.test.mjs",
+      "sha256": "49adb9624570c37bd84338e16266eede7d38bebf62a14e0a20f984a88a38dae6"
+    },
+    {
       "path": "tests/source-picker.test.mjs",
       "sha256": "5fb5d5834feb012e77ec6c24471583c3ad02365981a192fd3752f648c4116845"
+    },
+    {
+      "path": "tests/video-source.test.mjs",
+      "sha256": "f6471d66347ae90175e0016b5a0ef1c0f7f4d4f41b77e611ef7582b248207189"
     },
     {
       "path": "tsconfig.json",

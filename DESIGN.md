@@ -11,3 +11,5 @@ Source selection is shared by /opera, source-driven /learn and opera_source sele
 Game code, old offline worlds, game tests/assets, role prompts, five redundant skills, the alternate track/review queue, full-session logging and decorative 3D overlay were removed. Existing learner records were left untouched. The core Pi/typebox dependencies remain necessary; no direct dependency was game-only.
 
 Update-Opera.ps1 uses an explicit application manifest, backs up affected files and leaves learner/configuration trees intact. A clean distribution includes no dependency folders, credentials, learner state or personal notes.
+
+PPTX source extraction uses bounded in-memory ZIP/XML parsing (fflate and xmldom), ordered slide relationships and notes, with a two-deck content-hash cache. MP4 uses local FFmpeg/FFprobe for metadata, timestamped JPEGs and text subtitles. Optional Whisper CLI transcription is bounded to the requested clip; no speech engine is installed automatically. Images remain separate image content blocks and are omitted for text-only models. These formats share source confinement, native selection and existing read/search/list tools.

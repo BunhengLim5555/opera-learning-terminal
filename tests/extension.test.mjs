@@ -173,3 +173,32 @@ test('focused notes and visuals still save without a session transcript',async t
  for(const field of ['html','svg','note'])assert.ok(fs.existsSync(visual.details[field]));
  assert.equal(fs.existsSync(path.join(h.root,'Learning/Sessions')),false);
 });
+
+test('source tool returns PPTX slide references through the real Pi extension',async t=>{
+ const h=await harness(t),{zipSync,strToU8}=await import('fflate');
+ const file=path.join(h.root,'lecture.pptx');
+ const p='http://schemas.openxmlformats.org/presentationml/2006/main',a='http://schemas.openxmlformats.org/drawingml/2006/main',r='http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+ fs.writeFileSync(file,zipSync({
+  'ppt/presentation.xml':strToU8('<p:presentation xmlns:p="'+p+'" xmlns:r="'+r+'"><p:sldIdLst><p:sldId id="1" r:id="s"/></p:sldIdLst></p:presentation>'),
+  'ppt/_rels/presentation.xml.rels':strToU8('<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="s" Type="'+r+'/slide" Target="slides/s.xml"/></Relationships>'),
+  'ppt/slides/s.xml':strToU8('<p:sld xmlns:p="'+p+'" xmlns:a="'+a+'"><p:cSld><p:spTree><p:sp><p:txBody><a:p><a:r><a:t>The source mechanism</a:t></a:r></a:p></p:txBody></p:sp></p:spTree></p:cSld></p:sld>')
+ }));
+ const selected=await h.tool('opera_source',{action:'select',path:file}),root=selected.details.entry.id;
+ const result=await h.tool('opera_source',{action:'read',root,lines:1});
+ assert.match(result.content[0].text,/\[Slide 1\]/);assert.equal(result.details.totalSlides,1);
+ const search=await h.tool('opera_source',{action:'search',root,query:'mechanism'});assert.equal(search.details.hits[0].slide,1);
+});
+test('source tool returns MP4 image blocks with timestamps but keeps base64 out of details',async t=>{
+ const h=await harness(t),{mediaTools}=await import('../.pi/extensions/opera/lib/video.mjs'),{execFileSync}=await import('node:child_process');
+ const file=path.join(h.root,'clip.mp4');
+ execFileSync(mediaTools().ffmpeg,['-nostdin','-v','error','-f','lavfi','-i','color=c=blue:s=160x90:r=2','-t','1','-c:v','libx264','-pix_fmt','yuv420p','-y',file],{windowsHide:true,timeout:15000});
+ const selected=await h.tool('opera_source',{action:'select',path:file}),root=selected.details.entry.id;
+ const result=await h.tool('opera_source',{action:'read',root,startSeconds:0,seconds:0.7,frames:2});
+ assert.equal(result.content.filter(c=>c.type==='image').length,2);
+ assert.equal(result.details.frames.length,2);assert.equal(result.details.frames[0].image,undefined);
+ assert.match(result.content[1].text,/00:00:00/);assert.doesNotMatch(JSON.stringify(result.details),/base64|data:image/);
+ h.ctx.model={input:['text']};
+ const textOnly=await h.tool('opera_source',{action:'read',root,frames:2});
+ assert.equal(textOnly.content.filter(c=>c.type==='image').length,0);
+ assert.match(textOnly.details.warnings.join(' '),/No visual frames/);
+});

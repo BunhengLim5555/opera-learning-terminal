@@ -46,4 +46,4 @@ foreach ($entry in $manifest.files) {
 }
 Copy-Item -LiteralPath (Join-Path $sourceRoot 'application-manifest.json') -Destination (Join-Path $targetRoot 'application-manifest.json') -Force
 Write-Output "OPERA updated. Application backup: $backupRoot"
-Write-Output 'Learner data, notes, provider configuration and Pi history were preserved. Restart OPERA.'
+Write-Output 'Learner data, notes, provider configuration and Pi history were preserved. Run npm ci in the target folder for updated source-reader dependencies, then restart OPERA.'

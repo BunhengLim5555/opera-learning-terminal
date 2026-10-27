@@ -8,6 +8,7 @@ description: "OPERA supporting references for source-based study, practical reas
 AGENTS.md is the single teaching contract. Do not load a second core or sibling role/skill.
 
 Read only what the current task needs:
+- references/media.md for PPTX slide text and MP4 frames/captions or optional local speech transcription.
 - references/activities.md for optional prediction, practical task or audio browser activities.
 - references/debugging.md for a practical debugging lesson.
 - references/domains/<subject>.md for the active subject only.

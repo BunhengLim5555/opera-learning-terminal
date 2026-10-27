@@ -6,7 +6,7 @@ import {registerSource,listSources,supported} from './sources.mjs';
 export function pickerScript(kind){
  if(!['files','folder'].includes(kind))throw Error('Choose files or folder.');
  const setup=kind==='files'?
-  "$dialog=New-Object System.Windows.Forms.OpenFileDialog; $dialog.Title='Add source files to OPERA'; $dialog.Multiselect=$true; $dialog.CheckFileExists=$true; $dialog.RestoreDirectory=$true; $dialog.Filter='Supported sources|*.md;*.txt;*.rst;*.csv;*.tsv;*.json;*.jsonl;*.yaml;*.yml;*.py;*.js;*.mjs;*.ts;*.tsx;*.jsx;*.java;*.c;*.h;*.cpp;*.rs;*.go;*.sh;*.html;*.css;*.sql;*.xml;*.log;*.ipynb;*.pdf;*.png;*.jpg;*.jpeg;*.webp|All files|*.*';":
+  "$dialog=New-Object System.Windows.Forms.OpenFileDialog; $dialog.Title='Add source files to OPERA'; $dialog.Multiselect=$true; $dialog.CheckFileExists=$true; $dialog.RestoreDirectory=$true; $dialog.Filter='Supported sources|*.md;*.txt;*.rst;*.csv;*.tsv;*.json;*.jsonl;*.yaml;*.yml;*.py;*.js;*.mjs;*.ts;*.tsx;*.jsx;*.java;*.c;*.h;*.cpp;*.rs;*.go;*.sh;*.html;*.css;*.sql;*.xml;*.log;*.srt;*.vtt;*.ipynb;*.pdf;*.pptx;*.mp4;*.png;*.jpg;*.jpeg;*.webp|All files|*.*';":
   "$dialog=New-Object System.Windows.Forms.FolderBrowserDialog; $dialog.Description='Choose a source folder for OPERA'; $dialog.ShowNewFolderButton=$false; $dialog.SelectedPath=[Environment]::GetFolderPath('MyDocuments');";
  const selection=kind==='files'?'@($dialog.FileNames)':'@($dialog.SelectedPath)';
  return [
@@ -80,7 +80,7 @@ export async function chooseSource(store,args,ctx,options={}){
    for(const filename of [...new Set(paths)]){
     try{
      const stat=fs.statSync(filename);
-     if(kind==='files'&&(!stat.isFile()||!supported(filename)))throw Error('Use PDF, Markdown, text, code, notebook or image files.');
+     if(kind==='files'&&(!stat.isFile()||!supported(filename)))throw Error('Use PPTX, MP4, PDF, Markdown, text, code, notebook or image files.');
      if(kind==='folder'&&!stat.isDirectory())throw Error('Choose a folder.');
      const registered=registerSource(store,filename);if(!added.some(r=>r.id===registered.id))added.push(registered);
     }catch(error){ctx.ui.notify(path.basename(filename)+': '+error.message,'warning');}

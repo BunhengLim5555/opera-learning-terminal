@@ -4,12 +4,3 @@ Learning/
 *.log
 .env
 .env.*
-*.bak
-*.before-*
-.pi/auth.json
-.pi/settings.json
-.pi/sessions/
-opera-application-backup-*/
-opera-private-backup-*/
-.DS_Store
-Thumbs.db

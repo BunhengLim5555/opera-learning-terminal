@@ -1,14 +1,16 @@
+import {readVideo,readCaptionFile,timestamp} from './video.mjs';
+import {extractPptx,pptxLine,pptxLimitations} from './pptx.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import {createHash,randomUUID} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
-const textExt=new Set(['.md','.txt','.rst','.csv','.tsv','.json','.jsonl','.yaml','.yml','.py','.js','.mjs','.ts','.tsx','.jsx','.java','.c','.h','.cpp','.rs','.go','.sh','.html','.css','.sql','.xml','.log','.ipynb']);
+const textExt=new Set(['.md','.txt','.rst','.csv','.tsv','.json','.jsonl','.yaml','.yml','.py','.js','.mjs','.ts','.tsx','.jsx','.java','.c','.h','.cpp','.rs','.go','.sh','.html','.css','.sql','.xml','.log','.srt','.vtt','.ipynb']);
 const imageExt={'.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp'};
 const ignore=new Set(['node_modules','vendor','dist','build','Learning']);
 const limit=20*1024*1024;
 export function cleanPath(input) { let s=input.trim().replace(/^(["'])(.*)\1$/s,'$2');return s==='~'?os.homedir():s.startsWith('~/')?path.join(os.homedir(),s.slice(2)):s; }
-export function supported(p) { const ext=path.extname(p).toLowerCase();return textExt.has(ext)||ext==='.pdf'||ext in imageExt; }
+export function supported(p) { const ext=path.extname(p).toLowerCase();return textExt.has(ext)||['.pdf','.pptx','.mp4'].includes(ext)||ext in imageExt; }
 export function registerSource(store,input) {
  let raw=cleanPath(input), root;
  if(/^https?:\/\//i.test(raw)) {
@@ -57,7 +59,7 @@ export async function fetchText(url,fetcher=fetch) {
  if(!response.ok)throw Error(`Source returned HTTP ${response.status}; provide an exported file if sign-in is required.`);
  if(new URL(response.url||url).protocol!=='https:')throw Error('Source redirected away from HTTPS.');
  const type=response.headers.get('content-type')||'';
- if(!/text\/|application\/(json|xml)/i.test(type))throw Error('URL must return HTML, text or JSON. Download PDFs and add the local file.');
+ if(!/text\/|application\/(json|xml)/i.test(type))throw Error('URL must return HTML, text or JSON. Download PDF, PPTX or MP4 files and add the local file.');
  const reader=response.body.getReader();let size=0;const chunks=[];
  try { while(true){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>2*1024*1024)throw Error('Web source exceeds the 2 MB limit.');chunks.push(value);} } finally { await reader.cancel().catch(()=>{}); }
  const raw=Buffer.concat(chunks).toString('utf8');return {text:type.includes('html')?htmlText(raw):raw,location:response.url||url,format:type};
@@ -80,17 +82,29 @@ export function extractPdfText(file,{platform=process.platform,env=process.env,r
  }
  throw Error('PDF text requires pdftotext (Poppler or Xpdf); install it or provide a text export.');
 }
-export async function readSource(root,relative='',start=1,count=160) {
+function captionFilesFor(root,video) {
+ if(root.kind!=='folder')return [];
+ const stem=video.slice(0,-path.extname(video).length),out=[];
+ for(const ext of ['.srt','.vtt']){const file=stem+ext;if(!fs.existsSync(file))continue;try{const resolved=resolveSource(root,path.relative(root.path,file));if(fs.statSync(resolved).isFile())out.push(resolved);}catch{}}
+ return out;
+}
+export async function readSource(root,relative='',start=1,count=160,media={}) {
  if(!Number.isInteger(start)||start<1||!Number.isInteger(count)||count<1||count>300)throw Error('Use start >= 1 and 1–300 lines.');
  let text,location,format,buffer;
  if(root.kind==='url'){({text,location,format}=await fetchText(root.path));buffer=Buffer.from(text);}
  else {
   const p=resolveSource(root,relative),stat=fs.statSync(p);if(!stat.isFile())throw Error('Select a file inside this folder.');
+  if(path.extname(p).toLowerCase()==='.mp4')return readVideo(p,{...media,captionFiles:captionFilesFor(root,p)});
   if(stat.size>limit)throw Error('Source exceeds 20 MB; provide a smaller excerpt.');
   buffer=fs.readFileSync(p);location=p;format=path.extname(p).toLowerCase();
   if(format in imageExt) {
    if(buffer.length>8*1024*1024)throw Error('Image exceeds 8 MB.');
    return {location,format,image:{mimeType:imageExt[format],data:buffer.toString('base64')},sha256:createHash('sha256').update(buffer).digest('hex')};
+  }
+  if(format==='.pptx') {
+   const deck=extractPptx(buffer),selected=deck.lines.slice(start-1,start-1+count),out=[];let chars=0;
+   for(let i=0;i<selected.length;i++){const line=pptxLine(selected[i]);if(chars+line.length>18000){if(!out.length)out.push(start+': '+line.slice(0,18000)+' [long line clipped]');break;}out.push((start+i)+': '+line);chars+=line.length;}
+   return {location,format,sha256:deck.sha256,start,totalLines:deck.lines.length,totalSlides:deck.totalSlides,slideNumbers:[...new Set(selected.slice(0,out.length).map(l=>l.slide))],nextLine:start+out.length<=deck.lines.length?start+out.length:null,text:out.join('\n'),note:pptxLimitations};
   }
   if(format==='.pdf') {
    text=extractPdfText(p);
@@ -98,7 +112,7 @@ export async function readSource(root,relative='',start=1,count=160) {
   } else if(format==='.ipynb') {
    const nb=JSON.parse(buffer.toString('utf8'));text=(nb.cells||[]).filter(c=>['code','markdown'].includes(c.cell_type)).map(c=>`[${c.cell_type}]\n${Array.isArray(c.source)?c.source.join(''):c.source}`).join('\n\n');
   } else {
-   if(!textExt.has(format))throw Error('Unsupported source. Use Markdown, text, code, PDF, notebook, or image.');
+   if(!textExt.has(format))throw Error('Unsupported source. Use Markdown, text, code, PDF, PPTX, MP4, notebook, or image.');
    text=buffer.toString('utf8');if(text.includes('\0'))throw Error('Binary content cannot be read as text.');if(format==='.html')text=htmlText(text);
   }
  }
@@ -108,12 +122,24 @@ export async function readSource(root,relative='',start=1,count=160) {
 }
 export function searchSource(root,query,cap=30) {
  if(!query.trim())throw Error('Provide a search phrase.');
- const list=listSources(root,'',1000),hits=[];
+ const list=listSources(root,'',1000),hits=[];let decks=0;
  for(const file of list.items) {
   if(root.kind==='url')break;
-  const p=resolveSource(root,file);if(!textExt.has(path.extname(p).toLowerCase())||fs.statSync(p).size>2*1024*1024)continue;
+  const p=resolveSource(root,file),ext=path.extname(p).toLowerCase();
+  if(ext==='.mp4'){
+   for(const caption of captionFilesFor(root,p)){const cues=readCaptionFile(caption);for(let i=0;i<cues.length;i++)if(cues[i].text.toLowerCase().includes(query.toLowerCase())){hits.push({file,captionFile:path.relative(root.path,caption),cue:i+1,startSeconds:cues[i].start,endSeconds:cues[i].end,text:'['+timestamp(cues[i].start)+'] '+cues[i].text.slice(0,260)});if(hits.length>=cap)return {hits,truncated:true};}}
+   continue;
+  }
+  if(ext==='.pptx'){
+   if(++decks>20)return {hits,truncated:true,note:'PPTX search limited to 20 decks; select a narrower source.'};
+   if(fs.statSync(p).size>limit)continue;
+   const deck=extractPptx(fs.readFileSync(p));
+   for(let i=0;i<deck.lines.length;i++){const line=deck.lines[i];if(line.text.toLowerCase().includes(query.toLowerCase())){hits.push({file,line:i+1,slide:line.slide,section:line.section,text:pptxLine(line).slice(0,300)});if(hits.length>=cap)return {hits,truncated:true};}}
+   continue;
+  }
+  if(!textExt.has(ext)||fs.statSync(p).size>2*1024*1024)continue;
   const lines=fs.readFileSync(p,'utf8').split(/\r?\n/);
   for(let i=0;i<lines.length;i++)if(lines[i].toLowerCase().includes(query.toLowerCase())){hits.push({file,line:i+1,text:lines[i].slice(0,300)});if(hits.length>=cap)return {hits,truncated:true};}
  }
- return {hits,truncated:list.truncated};
+ return {hits,truncated:list.truncated,...(list.items.some(file=>path.extname(file).toLowerCase()==='.mp4')?{note:'MP4 search covers accessible sidecar subtitles only; read video windows for embedded captions, frames or optional speech transcription.'}:{})};
 }
