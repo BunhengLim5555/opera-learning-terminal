@@ -4,15 +4,17 @@ Study selected sources, understand mechanisms, practise, review weak concepts, a
 
 | Command | Purpose |
 |---|---|
-| /learn [topic] | Start a topic, or resume the current objective; select a source when needed |
+| /learn [topic] | Start a topic, or resume the topic and objective of the current Pi session; select a source when needed |
 | /review | Retrieve one observed weak or due target |
-| /opera | Source selection, style, progress, checkpoint, resume and saved artifacts |
+| /opera | Source selection, style, visual progress dashboard, checkpoint, resume and saved artifacts |
 
 Say “quiz me,” “use this source,” “explain directly,” “hint,” “show the answer,” “draw this,” “save a note,” “save a checkpoint,” “next,” or “pause.” After one answer and feedback, OPERA waits. Pi's /login, /model and session commands remain available.
 
 ## Start
 
 Requires Node.js 22.19+ (24 LTS works). From this folder:
+
+Run the first install with internet access. `ffmpeg-static` downloads its platform binary during `npm ci`; an offline install does not set up MP4 reading.
 
 ```powershell
 npm ci
@@ -26,7 +28,7 @@ npm start -- "C:\Users\you\Documents\Sources"
 npm start -- --resume
 ```
 
-Choose /opera → Select source for native Windows file/folder pickers, saved roots, HTTPS links or a typed path. Terminal browsing is the fallback. Files stay at their original locations. Bounded source tools support text/code, Markdown, CSV/JSON/YAML, notebooks, images, PPTX slides/speaker notes and text PDFs through optional Poppler. MP4 sources return timestamped frame samples and accessible subtitles from a bounded time range. Public HTTPS pages use bounded text extraction; sign-in pages, videos, scans and JavaScript-only pages need an accessible export or transcript.
+Choose /opera → Select source for native Windows file/folder pickers, saved roots, HTTPS links or a typed path. Terminal browsing is the fallback. Files stay at their original locations. Bounded source tools support local files up to 100 MB, including text/code, Markdown, CSV/JSON/YAML, notebooks, images, PPTX slides/speaker notes and numbered PDF pages. Scanned PDF pages are returned as images for a vision-capable model. MP4 sources return timestamped frame samples and accessible subtitles from a bounded time range. Public HTTPS pages use bounded text extraction; sign-in pages and JavaScript-only pages need an accessible export.
 
 Choose a flexible style: balanced, explain, socratic, hands-on or visual. Natural style changes use the same progress tool. Written reasoning and choice practice default to the terminal; an optional browser interface remains under /opera. Prediction, practical work and audio remain available only on request through the same practice tool, with narrowly loaded guidance. No games, XP, combat or mastery percentages.
 
@@ -41,7 +43,7 @@ Choose a flexible style: balanced, explain, socratic, hands-on or visual. Natura
 
 OPERA no longer duplicates full conversations into Markdown. Existing session logs, game records, notes, visuals and state are preserved as historical learner data. Existing state stays version 1; new checkpoint fields are optional, so no migration or reset is needed. State writes retain the existing backup/validation behavior.
 
-Learning/Notes and Learning/Visuals hold requested artifacts. Learning/Progress.md is refreshed explicitly. .opera/state.json retains sources, styles, attempts and checkpoints. Pi manages conversation history. Review dates are checked on use; they do not schedule notifications.
+Learning/Notes and Learning/Visuals hold requested artifacts. /opera → Progress opens Learning/Dashboard.html in a browser; Learning/Progress.md remains an export refreshed when evidence changes. .opera/state.json retains sources, styles, attempts, checkpoints and each Pi session's last topic. Pi manages conversation history. Review dates are checked on use; they do not schedule notifications.
 
 ## Update
 
@@ -55,7 +57,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File ".\Update-Opera.ps1" -Target
 
 The updater backs up affected application files beside the target, copies application files and removes only listed obsolete application files. It preserves .opera, Learning, node_modules, unrelated files and Pi/provider configuration. Keep private backups private. Never replace the whole old project folder with a clean distribution: the distribution intentionally excludes learner data.
 
-PPTX and MP4 add local parser/media dependencies. They are installed in this updated working project. For another installation or a fresh extraction, run npm ci from the project folder before starting. FFmpeg/FFprobe are supplied locally by npm; no global codec install or extra account is required. Optional PDF extraction requires pdftotext (existing Windows Git fallback remains).
+PPTX and MP4 add local parser/media dependencies. They are installed in this updated working project. For another installation or a fresh extraction, run npm ci from the project folder before starting. FFmpeg/FFprobe are supplied locally by npm; no global codec install or extra account is required. PDF text extraction requires `pdftotext` (the existing Windows Git fallback remains). Scanned PDF pages additionally require Poppler's `pdftoppm` and a vision-capable model. Put Poppler's `bin` folder on `PATH`, or set `OPERA_POPPLER_BIN` to that folder before starting OPERA (PowerShell example: `$env:OPERA_POPPLER_BIN = 'C:\path with spaces\poppler\Library\bin'`). The configured folder also supplies `pdfinfo` and `pdftotext` when present. `pdfinfo` is optional and supplies the total page count.
 
 See GUIDE.md for the short workflow and VALIDATION.md for measured payload and verification limits.
 

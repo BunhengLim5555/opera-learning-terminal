@@ -3,7 +3,7 @@
   "files": [
     {
       "path": ".gitignore",
-      "sha256": "ef9e0fce7b9697fa10282d83d7c2e8ef1183a12be5eb054f52fa93c64fb764ea"
+      "sha256": "0085edcbed2a460b48e12935c4132a4848ea0d6b4a15d649d3cae3333e24663f"
     },
     {
       "path": ".pi/extensions/opera/assets/marcus-aurelius.png",
@@ -15,7 +15,7 @@
     },
     {
       "path": ".pi/extensions/opera/index.ts",
-      "sha256": "c5255d257645f00547ce210fa2e0b61a709d4dd9d3f1b48e3a1019217588e917"
+      "sha256": "1ee00b4c7f472924604216c83e122aff4829ae247418b507896dddab0aca7891"
     },
     {
       "path": ".pi/extensions/opera/lib/activity-client.js",
@@ -31,15 +31,15 @@
     },
     {
       "path": ".pi/extensions/opera/lib/context.mjs",
-      "sha256": "9252929937e9797d86ed4c5080983bba93e75f8292c891390d21ce65ba6c5866"
+      "sha256": "199b80159230907dbdf7880d9b55059b9ecaae6638a422a89baef8486ee05444"
     },
     {
       "path": ".pi/extensions/opera/lib/insights.mjs",
-      "sha256": "2bf48a62894c5031e0ef2eebce1ec76445b217a7d4305b1c83e383a037acaf13"
+      "sha256": "f3999fa077140fab17972a8863b2fb43b7ab311fb85ec7b501850a7306e7c230"
     },
     {
       "path": ".pi/extensions/opera/lib/pptx.mjs",
-      "sha256": "f3b12e11506a5d2c5d689204faac890dbab9fae66254684d81b53b2df4207372"
+      "sha256": "2b292317d1cff0f0e3740c2d40851b0ee6eb6116169acc8c8d705b6f9518550c"
     },
     {
       "path": ".pi/extensions/opera/lib/quiz.mjs",
@@ -47,15 +47,15 @@
     },
     {
       "path": ".pi/extensions/opera/lib/source-picker.mjs",
-      "sha256": "4d6ad5d5b5891c351629d50bf3db111e037a2ebc196fa565dec24f4218c37bd3"
+      "sha256": "9b598fd13d19f3149a28bea18e226f4d77f05f1dee2e77d2cde19f67bd046e5c"
     },
     {
       "path": ".pi/extensions/opera/lib/sources.mjs",
-      "sha256": "f5102bea612ef58298a94206137b2dcafecf60465e3474d4f7e470ba46fdbc98"
+      "sha256": "ec6fd2991bcbd4a252e711718e64c5f9eaafa91e34f9cb7e6c1d5502e8129c42"
     },
     {
       "path": ".pi/extensions/opera/lib/store.mjs",
-      "sha256": "40f50b6b47cf2d23ed4bfd14fd732424d9f8709453d925f88c056e45082f9e3a"
+      "sha256": "2bf60839d3ee64bf2c0a19fdd5850c64078e167ddde2e0657cf479461544e126"
     },
     {
       "path": ".pi/extensions/opera/lib/video.mjs",
@@ -99,7 +99,7 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "b88cb6ff8b86b2cb166f81f39a06e38ec21a63449ebf02ce0d5008997d923d3b"
+      "sha256": "9b390dbe0f47995a0c525c0ead75901cabbe3fbd5e5cb9a3dc13d2f4055d5f66"
     },
     {
       "path": "DESIGN.md",
@@ -107,11 +107,11 @@
     },
     {
       "path": "GUIDE.md",
-      "sha256": "72ef697a074f406b9b4feaed15c8bf1dac002452f9b0e9e9d65d29598627162f"
+      "sha256": "43220cc73ceeb94ff8228fbb5fa10a0c6ccc9f4b3d65dd6b10e1364be179787e"
     },
     {
       "path": "README.md",
-      "sha256": "905b7818d6e32957c7888e4cd3d033031b84171d551b1d8a7bdab45715f82d68"
+      "sha256": "1af4a74b58958cae9bbfcab3012e1bf716a707b7745b022648b4ce54e27fba51"
     },
     {
       "path": "Update-Opera.ps1",
@@ -123,7 +123,7 @@
     },
     {
       "path": "examples/opera-preview.html",
-      "sha256": "cd6bfe511f6144503bc5ce646f77750fd94a91898ed803cd2c39c3ca3a492107"
+      "sha256": "16f6b2be0aedfb554cefb8eff3a282fbecb3387e4e076abe5b500ef7c23dc7cf"
     },
     {
       "path": "examples/opera-preview.svg",
@@ -147,7 +147,7 @@
     },
     {
       "path": "tests/activities.test.mjs",
-      "sha256": "038cc9c1a25e65c395cd35f36dc8a0e441a81bb9ebe63b06dc626be77ca7dd11"
+      "sha256": "1971e0870485aefbedf2fa28977032d44c95ae6239704a81df98b51447439e02"
     },
     {
       "path": "tests/branding.test.mjs",
@@ -155,23 +155,23 @@
     },
     {
       "path": "tests/browser.test.mjs",
-      "sha256": "68597d15385443b51038a575beb344e9a5944d1fa3bfe28e59d38c481fd05db6"
+      "sha256": "eb20e81850b1e0b6f8badc94ace3d321b77ceddf33aa89f8f281432e66ea5248"
     },
     {
       "path": "tests/core.test.mjs",
-      "sha256": "4a5e791404d3eb69a22a1768ee25befcd2f3fa06167994bc74b13aff6b4e4adb"
+      "sha256": "1947e7bce82a645e4ed5bcbff53ad4263898347b9392308cb9aea7e61c4449a2"
     },
     {
       "path": "tests/extension.test.mjs",
-      "sha256": "bf4293025c5cffe1291f168346f7c729b19052d0b472a08c34c132f2947da31e"
+      "sha256": "51646580bc23c47ae4e5312ce2177347c180aae7a102d1172babdc4a2d1237ec"
     },
     {
       "path": "tests/lean.test.mjs",
-      "sha256": "a53e511c1c03bccf8ea1e4fc87e09dd2b2b6255ed3138c365108a7db10a47354"
+      "sha256": "50e385987678303946f3734c64279e6f38c8a4227fc34ff03fc89eb876210dab"
     },
     {
       "path": "tests/pdf-source.test.mjs",
-      "sha256": "1ee96037b0f2a16f392d7d1f19ee44301fb76f3708a9d202b81efed859327342"
+      "sha256": "37ce31f35e2e4a8114c79ec797b50da80b4726a286f7a740edde961c69d989ac"
     },
     {
       "path": "tests/pptx-source.test.mjs",
@@ -180,6 +180,10 @@
     {
       "path": "tests/source-picker.test.mjs",
       "sha256": "5fb5d5834feb012e77ec6c24471583c3ad02365981a192fd3752f648c4116845"
+    },
+    {
+      "path": "tests/update.test.mjs",
+      "sha256": "2a7052c70a4d83051bf96bd1e7248ec636e73373c842d50971af26c474e03cf6"
     },
     {
       "path": "tests/video-source.test.mjs",

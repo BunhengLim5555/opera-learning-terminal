@@ -51,6 +51,12 @@ test('public-page extraction excludes scripts and rejects errors or nontext',asy
  const result=await fetchText('https://example.test/',async()=>new Response('<h1>A &amp; B</h1><script>secret()</script><p>Content</p>',{headers:{'content-type':'text/html'}}));assert.match(result.text,/A & B/);assert.doesNotMatch(result.text,/secret/);
  await assert.rejects(fetchText('https://example.test/',async()=>new Response('blocked',{status:403})),/403/);
  await assert.rejects(fetchText('https://example.test/',async()=>new Response('binary',{headers:{'content-type':'video/mp4'}})),/must return/);
+ const visited=[];
+ await assert.rejects(fetchText('https://example.test/',async(url,options)=>{
+  visited.push(url);assert.equal(options.redirect,'manual');
+  return new Response(null,{status:302,headers:{location:'http://127.0.0.1/private'}});
+ }),/HTTPS/);
+ assert.deepEqual(visited,['https://example.test/']);
 });
 test('option shuffling keeps stable answer IDs; public prompt hides keys',()=>{
  const p={mode:'choice',question:'Which?',options:[{id:'a',label:'Alpha'},{id:'b',label:'Beta'}],correctId:'a',explanation:'Private key'};const options=prepareQuestion(p,()=>0);assert.equal(options[0].id,'b');assert.equal(gradeChoice('a',p.correctId),'correct');assert.equal(gradeChoice('__skip','a'),'skipped');assert.equal(gradeChoice('__idk','a'),'idk');assert.doesNotMatch(JSON.stringify(publicPrompt(p,options)),/Private key|correctId/);

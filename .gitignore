@@ -1,6 +1,7 @@
 node_modules/
 .opera/
 Learning/
+.verification-clean/
 *.log
 .env
 .env.*

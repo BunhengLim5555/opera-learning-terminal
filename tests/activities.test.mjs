@@ -75,6 +75,27 @@ test('home reasons and dashboard preserve evidence dimensions, unknowns and lite
  const rows=evidenceRows(s.read());assert.equal(rows.length,1);assert.equal(rows[0].independent,1);assert.equal(rows[0].assisted,1);assert.match(recommendations(s).apply.reason,/recognized/);
  const html=renderDashboard(s);assert.doesNotMatch(html,/<script>bad/);assert.match(html,/&lt;script&gt;/);assert.match(html,/application/);assert.match(html,/not a mastery score/);assert.match(reviewPrompt(s.read(),a),/preserve the target dimension/);
 });
+test('dashboard summarizes two topics without counting skips or unassessed work as assessed',t=>{
+ const s=new Store(temp(t));
+ const first=s.capture({topic:'Japanese N3',concept:'conditional',dimension:'explanation',question:'Explain.',response:'できれば',sessionId:'japanese'});
+ s.assess(first.id,'correct','Explained the form.');
+ const assisted=s.capture({topic:'Japanese N3',concept:'conditional',dimension:'application',question:'Use it.',response:'できれば',assistance:'hint',sessionId:'japanese'});
+ s.assess(assisted.id,'correct','Applied with a hint.');
+ const skipped=s.capture({topic:'Algebra',concept:'equation',dimension:'application',question:'Solve.',response:'skip',sessionId:'math'});
+ s.assess(skipped.id,'skipped','Skipped.');
+ const unassessed=s.capture({topic:'Algebra',concept:'equation',dimension:'application',question:'Explain.',response:'Cannot verify',sessionId:'math'});
+ s.assess(unassessed.id,'not_assessed','No observation.');
+ s.capture({topic:'Algebra',concept:'equation',dimension:'explanation',question:'Why?',response:'Pending answer',sessionId:'math'});
+ s.checkpoint({summary:'Working on equations.',next:'Try another equation.'});
+ const html=renderDashboard(s);
+ assert.match(html,/<strong>2<\/strong><span>Assessed attempts<\/span>/);
+ assert.match(html,/<strong>1<\/strong><span>Independent correct<\/span>/);
+ assert.match(html,/<strong>1<\/strong><span>Assisted attempts<\/span>/);
+ assert.match(html,/<strong>1<\/strong><span>Awaiting feedback<\/span>/);
+ assert.match(html,/Current topic: Algebra/);
+ assert.match(html,/Try another equation/);
+ assert.doesNotMatch(html,/mastery percentage/i);
+});
 test('legacy v1 records survive additive fields and unrelated settings are preserved',t=>{
  const s=new Store(temp(t)),a=capture(s);s.mutate(state=>{delete state.attempts[0].activity;state.customSetting={keep:true};});s.assess(a.id,'partial','One gap.',new Date(),{mistake:'One precise gap.'});assert.deepEqual(s.read().customSetting,{keep:true});assert.equal(s.read().version,1);
 });

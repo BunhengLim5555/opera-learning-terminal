@@ -42,6 +42,11 @@ test('real Chromium browser: activities, audio fallback/recording and dashboard'
   const {a,page}=await setup({mode:'recall',question:'Explain the rule.'});await page.locator('#submit').click();await page.waitForFunction(()=>document.getElementById('status').textContent.includes('Write a response'));await page.locator('#cancel').click();assert.equal((await a.result).status,'cancelled');
  });
  await t.test('dashboard opens as local HTML at phone width',async()=>{
-  const page=await context.newPage();const file=saveDashboard(new Store(root));await page.goto(pathToFileURL(file).href);assert.equal(await page.locator('h1').textContent(),'Evidence, not a mastery score');assert.equal(await page.locator('.cards section').count(),4);await page.close();
+  const store=new Store(root);store.capture({topic:'日本語 N3 '+('文法'.repeat(35)),concept:'conditional',dimension:'explanation',question:'Explain.',response:'<script>bad()</script> '+('長い回答'.repeat(100)),sessionId:'japanese'});
+  const page=await context.newPage();await page.setViewportSize({width:375,height:844});const file=saveDashboard(store);await page.goto(pathToFileURL(file).href);assert.equal(await page.locator('h1').textContent(),'Evidence, not a mastery score');assert.equal(await page.locator('.cards section').count(),4);
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),true);
+  assert.equal(await page.locator('.chart-row').count(),1);
+  assert.equal((await page.content()).includes('<script>bad()</script>'),false);
+  await page.locator('details summary').focus();await page.keyboard.press('Enter');assert.equal(await page.locator('details').first().getAttribute('open'),'');await page.close();
  });
 });

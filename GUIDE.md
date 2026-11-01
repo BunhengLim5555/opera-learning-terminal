@@ -5,7 +5,7 @@
 3. Say “quiz me.” Answer one question, request hints if needed, read feedback, then say “next” when ready. “Show the answer” gives the solution without pretending you independently solved it.
 4. Ask “draw this” when a map or walkthrough would clarify a relationship. The saved HTML opens in your browser when supported.
 5. Say “save a note” for a focused concept note, or “save a checkpoint” to preserve your current objective, source section, evidence, pending question and next action.
-6. Later use /learn with no topic or /opera → Resume. Use /review for one observed weak/due target.
+6. Later resume a Pi session, then use /learn with no topic or /opera → Resume to continue that session's topic. Use /opera → Progress for the visual browser dashboard, or /review for one observed weak/due target.
 
 The /opera home is a single list. Style and practice-interface choices each open one selection list; source selection offers files, folders, links and saved sources. There are no game menus or separate quiz/source commands.
 

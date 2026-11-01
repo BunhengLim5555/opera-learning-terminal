@@ -14,6 +14,9 @@ export function emptyState() { return {version:1, style:'balanced', activeTopic:
 export function checkState(s) {
  if (!s || s.version!==1 || !styles.includes(s.style) || !Array.isArray(s.roots) || !Array.isArray(s.attempts) || typeof s.topics!=='object' || !s.topics || Array.isArray(s.topics)) throw Error('Invalid OPERA state; restore .opera/state.json.bak instead of overwriting your record.');
  if(s.practicePresentation!==undefined&&!['browser','terminal'].includes(s.practicePresentation))throw Error('Invalid practice interface in OPERA state.');
+ if(s.sessionTopics!==undefined&&(typeof s.sessionTopics!=='object'||!s.sessionTopics||Array.isArray(s.sessionTopics)||Object.values(s.sessionTopics).some(id=>!s.topics[id])))throw Error('Invalid session topics in OPERA state.');
+ if(s.sessionSources!==undefined&&(typeof s.sessionSources!=='object'||!s.sessionSources||Array.isArray(s.sessionSources)||Object.values(s.sessionSources).some(source=>!source||typeof source.rootId!=='string'||typeof source.file!=='string')))throw Error('Invalid session sources in OPERA state.');
+ if(s.sessionCheckpoints!==undefined&&(typeof s.sessionCheckpoints!=='object'||!s.sessionCheckpoints||Array.isArray(s.sessionCheckpoints)))throw Error('Invalid session checkpoints in OPERA state.');
  const ids=new Set();
  for (const a of s.attempts) {
   if (!a.id || ids.has(a.id) || !s.topics[a.topicId] || !['pending', ...verdicts].includes(a.verdict) || !dimensions.includes(a.dimension) || !assistanceTypes.includes(a.assistance)) throw Error('Invalid or duplicate attempt in OPERA state.');
@@ -38,16 +41,24 @@ export class Store {
    fs.renameSync(tmp,this.file); return result;
   } finally { fs.closeSync(fd); fs.unlinkSync(lock); }
  }
- setTopic(topic, goal) {
+ setTopic(topic, goal, sessionId) {
   if(typeof topic!=='string'||!topic.trim()||topic.length>160) throw Error('Use a topic of 1–160 characters.');
   const id=keyFor(topic);
-  this.mutate(s=>{s.activeTopic=id;s.topics[id]??={id,title:topic.trim(),goal:goal||topic.trim(),checkpoint:null};if(goal)s.topics[id].goal=goal;});
+  this.mutate(s=>{s.activeTopic=id;s.topics[id]??={id,title:topic.trim(),goal:goal||topic.trim(),checkpoint:null};if(goal)s.topics[id].goal=goal;if(sessionId){s.activeSessionId=sessionId;s.sessionTopics??={};s.sessionTopics[sessionId]=id;}});
   return id;
+ }
+ activateSession(sessionId,{clearIfUnknown=false,topicHint=null}={}) {
+  const s=this.read();
+  const hinted=topicHint&&Object.values(s.topics).find(t=>t.title.toLowerCase()===topicHint.toLowerCase())?.id;
+  const topicId=s.sessionTopics?.[sessionId]||s.attempts.findLast(a=>a.sessionId===sessionId)?.topicId||hinted;
+  if(!topicId&&!clearIfUnknown)return s.activeTopic;
+  this.mutate(state=>{state.activeSessionId=sessionId;state.activeTopic=topicId||null;const checkpoint=state.sessionCheckpoints?state.sessionCheckpoints[sessionId]:state.topics[topicId]?.checkpoint;state.activeSource=topicId?state.sessionSources?.[sessionId]||checkpoint?.source||null:null;if(topicId){state.sessionTopics??={};state.sessionTopics[sessionId]=topicId;}});
+  return topicId||null;
  }
  capture({topic,concept,dimension='recognition',question,response,assistance='none',source=null,context='initial',sessionId='local',activity=null}, now=new Date()) {
   if(!dimensions.includes(dimension)||!assistanceTypes.includes(assistance)) throw Error('Invalid evidence classification.');
   if(typeof response!=='string'||!response.trim())throw Error('Capture requires a real nonempty response.');
-  const topicId=this.setTopic(topic), a={id:randomUUID(),topicId,concept:concept||topic,dimension,question,response,assistance,source,context,sessionId,activity,date:localDay(now),timestamp:now.toISOString(),verdict:'pending',feedback:null,nextReview:null,interval:0};
+  const topicId=this.setTopic(topic,undefined,sessionId), a={id:randomUUID(),topicId,concept:concept||topic,dimension,question,response,assistance,source,context,sessionId,activity,date:localDay(now),timestamp:now.toISOString(),verdict:'pending',feedback:null,nextReview:null,interval:0};
   this.mutate(s=>s.attempts.push(a));return a;
  }
  assess(id,verdict,feedback,now=new Date(),details={}) {
@@ -81,8 +92,9 @@ export class Store {
   return [...latest.values()].filter(a=>(!topicId||a.topicId===topicId)&&a.nextReview&&a.nextReview<=today).sort((a,b)=>(a.evidence==='needs_review'?0:1)-(b.evidence==='needs_review'?0:1)||a.nextReview.localeCompare(b.nextReview));
  }
  reviewTargets(today=localDay()) {
-  const due=this.due(today);if(due.length)return due;
-  const s=this.read(),latest=new Map();
+  const s=this.read();if(!s.activeTopic)return [];
+  const due=this.due(today,s.activeTopic);if(due.length)return due;
+  const latest=new Map();
   for(const a of s.attempts)if(a.topicId===s.activeTopic&&!['pending','skipped','not_assessed'].includes(a.verdict))latest.set(JSON.stringify([a.concept,a.dimension]),a);
   return [...latest.values()].filter(a=>['partial','minor_slip','incorrect','idk'].includes(a.verdict)&&a.mistake?.status!=='resolved');
  }
@@ -116,18 +128,20 @@ export class Store {
   if(p.assistance!==undefined&&!assistanceTypes.includes(p.assistance))throw Error('Invalid checkpoint assistance.');
   return this.mutate(s=>{
    const t=s.topics[s.activeTopic];if(!t)throw Error('Set a topic using /learn, or supply checkpoint topic.');
-   const attempts=s.attempts.filter(a=>a.topicId===s.activeTopic);
+   const attempts=s.attempts.filter(a=>a.topicId===s.activeTopic&&(!s.activeSessionId||a.sessionId===s.activeSessionId));
    const pending=attempts.findLast(a=>a.verdict==='pending');
    const latest=attempts.at(-1),weak=attempts.findLast(a=>['partial','minor_slip','incorrect','idk'].includes(a.verdict));
    const question=p.pendingQuestion??pending?.question??latest?.question;
    const exposed=(s.answerExposure||[]).findLast(a=>a.topic===t.title&&(!question||a.question===question));
-   t.checkpoint={...t.checkpoint,summary:p.summary,next:p.next,objective:p.objective||t.goal,source:s.activeSource||null,section:p.section||t.checkpoint?.section||null,
+   const prior=s.activeSessionId&&s.sessionCheckpoints?s.sessionCheckpoints[s.activeSessionId]:t.checkpoint;
+   t.checkpoint={...prior,summary:p.summary,next:p.next,objective:p.objective||t.goal,source:s.activeSource||null,section:p.section||prior?.section||null,
     evidence:attempts.filter(a=>!['pending','skipped','not_assessed'].includes(a.verdict)).slice(-3).map(a=>({attemptId:a.id,concept:a.concept,verdict:a.verdict,assistance:a.assistance,evidence:a.evidence})),
     weakTarget:weak?{concept:weak.concept,feedback:weak.feedback}:null,
     pendingQuestion:p.pendingQuestion??pending?.question??null,pendingAttemptId:pending?.id||null,
     assistance:exposed?'answer_shown':(p.assistance||pending?.assistance||latest?.assistance||'none'),
     answerExposure:exposed?{question:exposed.question,at:exposed.at}:null,
     reviewDate:p.reviewDate||latest?.nextReview||null,at:new Date().toISOString()};
+   if(s.activeSessionId){s.sessionCheckpoints??={};s.sessionCheckpoints[s.activeSessionId]=t.checkpoint;}
    return t.checkpoint;
   });
  }

@@ -60,7 +60,7 @@ export async function browseInTerminal(kind,ctx,start=os.homedir()){
   if(entry.isDirectory())current=path.join(current,entry.name);else return [path.join(current,entry.name)];
  }
 }
-/** @param {any} store @param {string} args @param {any} ctx @param {{pick?: typeof pickSourcePaths,signal?: AbortSignal}} [options] */
+/** @param {any} store @param {string} args @param {any} ctx @param {{pick?: typeof pickSourcePaths,signal?: AbortSignal,sessionId?: string}} [options] */
 export async function chooseSource(store,args,ctx,options={}){
  const {pick=pickSourcePaths,signal}=options;
  if(signal?.aborted)return;
@@ -112,6 +112,6 @@ export async function chooseSource(store,args,ctx,options={}){
   }
  }
  if(signal?.aborted)return;
- store.mutate(s=>{s.activeSource={rootId:entry.id,file:selected};});
+ store.mutate(s=>{s.activeSource={rootId:entry.id,file:selected};if(options.sessionId){s.activeSessionId=options.sessionId;s.sessionSources??={};s.sessionSources[options.sessionId]=s.activeSource;}});
  return {entry,file:selected};
 }

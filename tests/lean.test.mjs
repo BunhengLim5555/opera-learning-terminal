@@ -6,6 +6,7 @@ import os from 'node:os';
 import {fileURLToPath} from 'node:url';
 import {Store,emptyState} from '../.pi/extensions/opera/lib/store.mjs';
 import {compactContext} from '../.pi/extensions/opera/lib/context.mjs';
+import {recommendations} from '../.pi/extensions/opera/lib/insights.mjs';
 import {loadProjectContextFiles} from '../node_modules/@earendil-works/pi-coding-agent/dist/core/resource-loader.js';
 import {loadSkillsFromDir} from '../node_modules/@earendil-works/pi-coding-agent/dist/core/skills.js';
 const project=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -45,6 +46,19 @@ test('review selects actual latest weak evidence, ignores skips and respects lat
  assert.equal(store.reviewTargets('2000-01-01')[0].id,a.id);
  const skip=store.capture(base);store.assess(skip.id,'skipped','Skip');assert.equal(store.reviewTargets('2000-01-01')[0].id,a.id);
  const b=store.capture(base);store.assess(b.id,'correct','Correct');assert.equal(store.reviewTargets('2000-01-01').length,0);
+});
+test('review and recall stay on the active subject after switching sessions',t=>{
+ const store=new Store(temp(t));
+ const japanese=store.capture({topic:'Japanese N3',concept:'particles',question:'Which particle?',response:'wrong',sessionId:'japanese'});
+ store.assess(japanese.id,'incorrect','Use に.',new Date('2026-01-01T12:00:00Z'));
+ store.setTopic('Algebra',undefined,'algebra');
+ assert.deepEqual(store.reviewTargets('2026-01-03'),[]);
+ assert.match(recommendations(store).recall.reason,/No targets are due/);
+ const algebra=store.capture({topic:'Algebra',concept:'signs',question:'Find sign',response:'wrong',sessionId:'algebra'});
+ store.assess(algebra.id,'incorrect','Negative.',new Date('2026-01-01T12:00:00Z'));
+ assert.equal(store.reviewTargets('2026-01-03')[0].id,algebra.id);
+ store.activateSession('japanese',{clearIfUnknown:true});
+ assert.equal(store.reviewTargets('2026-01-03')[0].id,japanese.id);
 });
 test('active app has no game modules, world render path, logger, or role prompts',()=>{
  const lib=path.join(project,'.pi/extensions/opera/lib'),names=fs.readdirSync(lib);
